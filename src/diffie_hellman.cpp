@@ -13,9 +13,9 @@ uint64_t DiffieHellman::fast_powmod(uint64_t x, uint64_t n, uint64_t m) {
     uint64_t half_result = fast_powmod(x, n >> 1, m);
 
     if ((n & 1) == 0) {
-        return half_result * half_result;
+        return (half_result * half_result) % m;
     } else {
-        return half_result * half_result * (x % m);
+        return (half_result * half_result * (x % m)) % m;
     }
 }
 
