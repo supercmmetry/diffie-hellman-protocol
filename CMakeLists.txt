@@ -4,6 +4,13 @@ project(diffie_hellman_tls)
 set(CMAKE_CXX_STANDARD 20)
 include_directories(include)
 
-add_library(diffie_hellman STATIC include/diffie_hellman.h src/diffie_hellman.cpp include/encryption.h src/encryption.cpp include/check_sum.h)
+add_library(diffie_hellman_tls STATIC
+        include/diffie_hellman.h
+        src/diffie_hellman.cpp
+        include/encryption.h
+        src/encryption.cpp
+        include/hash_validator.h
+        src/hash_validator.cpp)
 
-add_executable(diffie_hellman_tls main.cpp)
+add_executable(diffie_hellman_demo main.cpp)
+target_link_libraries(diffie_hellman_demo PUBLIC diffie_hellman_tls)
