@@ -10,7 +10,7 @@ add_library(diffie_hellman_tls STATIC
         include/encryption.h
         src/encryption.cpp
         include/hash_validator.h
-        src/hash_validator.cpp)
+        src/hash_validator.cpp src/session.cpp src/protocol.cpp)
 
-add_executable(diffie_hellman_demo main.cpp)
+add_executable(diffie_hellman_demo main.cpp include/session.h include/errors.h include/control.h include/protocol.h)
 target_link_libraries(diffie_hellman_demo PUBLIC diffie_hellman_tls)

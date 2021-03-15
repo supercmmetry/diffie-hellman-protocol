@@ -2,14 +2,13 @@
 #define DIFFIE_HELLMAN_TLS_HASH_VALIDATOR_H
 
 #include <memory>
+#include <vector>
 
 class HashValidator {
 public:
-    static std::pair<std::shared_ptr<uint8_t>, uint64_t>
-    generate_hash(const std::shared_ptr<uint8_t> &data, uint64_t length);
+    static std::vector<uint8_t> generate_hash(const std::vector<uint8_t> &data);
 
-    static bool
-    validate_hash(const std::shared_ptr<uint8_t> &data, uint64_t length, const std::shared_ptr<uint8_t> &hash);
+    static bool validate_hash(const std::vector<uint8_t> &data, const std::vector<uint8_t> &hash);
 };
 
 #endif

@@ -11,26 +11,24 @@ EncryptionCodec::EncryptionCodec(uint64_t shared_secret) {
     }
 }
 
-std::shared_ptr<uint8_t> EncryptionCodec::encrypt(const std::shared_ptr<uint8_t> &data, uint64_t length) {
+std::vector<uint8_t> EncryptionCodec::encrypt(const std::vector<uint8_t> &data) {
     CryptoPP::SecByteBlock key_iv(16);
     key_iv.Assign(_key, 16);
 
     CryptoPP::CFB_Mode<CryptoPP::AES>::Encryption encryptor(key_iv, key_iv.size(), key_iv);
-    auto output = std::make_shared<uint8_t>(length);
-    encryptor.ProcessData(output.get(), data.get(), length);
+    auto output = std::vector<uint8_t>(data.size());
+    encryptor.ProcessData(output.data(), data.data(), data.size());
 
     return output;
 }
 
-std::shared_ptr<uint8_t> EncryptionCodec::decrypt(const std::shared_ptr<uint8_t> &data, uint64_t length) {
+std::vector<uint8_t> EncryptionCodec::decrypt(const std::vector<uint8_t> &data) {
     CryptoPP::SecByteBlock key_iv(16);
     key_iv.Assign(_key, 16);
 
     CryptoPP::CFB_Mode<CryptoPP::AES>::Decryption decryptor(key_iv, key_iv.size(), key_iv);
-    auto output = std::make_shared<uint8_t>(length);
-    decryptor.ProcessData(output.get(), data.get(), length);
+    auto output = std::vector<uint8_t>(data.size());
+    decryptor.ProcessData(output.data(), data.data(), data.size());
 
     return output;
 }
-
-

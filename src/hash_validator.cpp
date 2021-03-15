@@ -2,21 +2,19 @@
 #include <cryptopp/sha.h>
 
 
-std::pair<std::shared_ptr<uint8_t>, uint64_t>
+std::vector<uint8_t>
 HashValidator::generate_hash(
-        const std::shared_ptr<uint8_t> &data,
-        uint64_t length
+        const std::vector<uint8_t> &data
 ) {
-    auto output = std::make_shared<uint8_t>(CryptoPP::SHA256::DIGESTSIZE);
-    CryptoPP::SHA256().CalculateDigest(output.get(), data.get(), length);
+    auto output = std::vector<uint8_t>(CryptoPP::SHA256::DIGESTSIZE);
+    CryptoPP::SHA256().CalculateDigest(output.data(), data.data(), data.size());
 
-    return std::pair<std::shared_ptr<uint8_t>, uint64_t>(output, CryptoPP::SHA256::DIGESTSIZE);
+    return output;
 }
 
 bool HashValidator::validate_hash(
-        const std::shared_ptr<uint8_t> &data,
-        uint64_t length,
-        const std::shared_ptr<uint8_t> &hash
+        const std::vector<uint8_t> &data,
+        const std::vector<uint8_t> &hash
 ) {
-    return CryptoPP::SHA256().VerifyDigest(hash.get(), data.get(), length);
+    return CryptoPP::SHA256().VerifyDigest(hash.data(), data.data(), data.size());
 }
