@@ -7,7 +7,7 @@
 #include <hash_validator.h>
 
 ProtocolEngine::ProtocolEngine(const Session &session) : _session(session) {
-    _dhman = DiffieHellman(5915587277, 99991);
+    _dhman = DiffieHellman(99991, 1024);
     _dhman.generate_private_key();
     _dhman.generate_public_key();
 }
@@ -32,7 +32,11 @@ void ProtocolEngine::create_shared_secret() {
         throw Error("Invalid protocol sequence");
     }
 
+    std::cout << "[MAIN] Received public key: " << "0x" << std::hex << other_pkey << std::endl;
+
     _dhman.generate_shared_secret(other_pkey);
+    std::cout << "[MAIN] Generated shared secret: " << "0x" << std::hex << _dhman.get_shared_secret() << std::endl;
+
     _codec = EncryptionCodec(_dhman.get_shared_secret());
 }
 
@@ -117,7 +121,7 @@ void ProtocolEngine::start_listener(
                         auto hash = std::vector<uint8_t>(hash_size);
                         _session.t_recv(hash.data(), hash_size);
 
-                        if (!HashValidator::validate_hash(buffer, hash)) {
+                        if (!HashValidator::validate_hash(decoded, hash)) {
                             throw Error("Hash mismatch");
                         }
 
@@ -183,6 +187,7 @@ void ProtocolEngine::start_listener(
 
             } catch (std::exception &e) {
                 std::cerr << "[ERROR]: " << e.what() << std::endl;
+                exit(1);
             }
         }
     }).detach();

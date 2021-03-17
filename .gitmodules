@@ -1,0 +1,3 @@
+[submodule "other/argparse"]
+	path = other/argparse
+	url = git@github.com:jamolnng/argparse

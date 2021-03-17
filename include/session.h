@@ -12,6 +12,8 @@ private:
     uint16_t _port{};
 
 public:
+    Session() = default;
+
     Session(const std::string &ip_addr, uint16_t port) : _ip_addr(ip_addr), _port(port) {}
 
     Session(const Session &copy) = default;

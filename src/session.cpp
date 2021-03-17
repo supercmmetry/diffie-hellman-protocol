@@ -27,6 +27,7 @@ void Session::serve() {
     }
 
     sock_addr_size = sizeof(client_addr);
+
     _sock = accept(server_sock, (sockaddr *) &client_addr, &sock_addr_size);
 
     char *ip_addr = new char[INET_ADDRSTRLEN + 1];
@@ -54,13 +55,13 @@ void Session::connect() {
 }
 
 void Session::t_send(const void *buf, size_t n) const {
-    if (send(_sock, buf, n, 0) < n) {
+    if (send(_sock, buf, n, MSG_NOSIGNAL) < n) {
         throw Error("Insufficient data sent");
     }
 }
 
 void Session::t_recv(void *buf, size_t n) const {
-    if (recv(_sock, buf, n, MSG_WAITALL) < n) {
+    if (recv(_sock, buf, n, MSG_WAITALL | MSG_NOSIGNAL) < n) {
         throw Error("Insufficient data received");
     }
 }

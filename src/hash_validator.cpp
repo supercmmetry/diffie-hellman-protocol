@@ -1,7 +1,6 @@
 #include <hash_validator.h>
 #include <cryptopp/sha.h>
 
-
 std::vector<uint8_t>
 HashValidator::generate_hash(
         const std::vector<uint8_t> &data

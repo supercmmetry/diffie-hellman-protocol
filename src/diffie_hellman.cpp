@@ -1,5 +1,6 @@
 #include <diffie_hellman.h>
 #include <random>
+#include <iostream>
 
 uint64_t DiffieHellman::fast_powmod(uint64_t x, uint64_t n, uint64_t m) {
     if (n == 0) {
@@ -25,6 +26,8 @@ void DiffieHellman::generate_private_key() {
 
     std::uniform_int_distribution<uint64_t> dist(0xffffff, 0xffffffffffffffff);
     _private_key = dist(mt);
+
+    std::cout << "[MAIN] Generated random private-key: " << "0x" << std::hex << _private_key << std::endl;
 }
 
 void DiffieHellman::generate_public_key() {
