@@ -88,7 +88,7 @@ int main(int argc, const char *argv[]) {
 
     auto file_callback = [&input_mutex, &output_mutex](const std::string &filename, const std::vector<uint8_t> &data) {
         std::scoped_lock<std::mutex, std::mutex> lock(*input_mutex, *output_mutex);
-        std::cout << "[FILEDATA] " << filename << "Confirm download (y/n): ";
+        std::cout << "[FILEDATA] " << filename << " - Confirm download (y/n): ";
 
         char c;
         std::cin >> c;

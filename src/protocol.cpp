@@ -79,14 +79,20 @@ void ProtocolEngine::send_file(const std::string &filename, const std::vector<ui
     _session.t_send(&cipher_length, sizeof(cipher_length));
     _session.t_send(cipher.data(), cipher_length);
 
+    auto hash = HashValidator::generate_hash(buffer);
+    uint64_t hash_size = hash.size();
+
+    _session.t_send(&hash_size, sizeof(hash_size));
+    _session.t_send(hash.data(), hash_size);
+
     cipher = _codec.encrypt(data);
     cipher_length = cipher.size();
 
     _session.t_send(&cipher_length, sizeof(cipher_length));
     _session.t_send(cipher.data(), cipher_length);
 
-    auto hash = HashValidator::generate_hash(data);
-    uint64_t hash_size = hash.size();
+    hash = HashValidator::generate_hash(data);
+    hash_size = hash.size();
 
     _session.t_send(&hash_size, sizeof(hash_size));
     _session.t_send(hash.data(), hash_size);

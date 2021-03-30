@@ -23,7 +23,7 @@ public:
             const ProtocolEngine &engine
     );
 
-    void start();
+    [[noreturn]] void start();
 };
 
 #endif
